@@ -43,13 +43,13 @@
 
 """
 
-from core.common.log import Log
-
-from core.testingKit_app.driver import Driver
+from core.testingKit_app.driver import *
 
 from core.testingKit_app.constructors_app import ConstructorsApp
 from core.testingKit_app.constructors_view import ConstructorsView
 from core.testingKit_app.constructors_module import ConstructorsModule
+
+from core.common.log import Log
 
 
 __all__ = ['Puppeteer']

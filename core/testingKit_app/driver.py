@@ -28,15 +28,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from core.common.log import Log
 from core.common.tools import Tools
 
+from core.testingKit_app.const import *
+
 
 __all__ = ['Driver']
-
-
-# 常量
-CONST_ELEMENT_BY = 'by'
-CONST_ELEMENT_EL = 'el'
-CONST_ELEMENT_ID = 'id'
-CONST_ANCHOR_ELEMENT = 'anchor_ele'
 
 
 class Driver(object):
@@ -69,14 +64,18 @@ class Driver(object):
 
             self.driverObj = webdriver.Remote(f'http://localhost:{interface}/wd/hub', self._configData)
 
+            self._Log.info('Driver has started .. >> running')
+
         except Exception as err:
             self._Log.warning(f'Driver 配置解析失败，详情信息: {err}')
 
     def quit(self):
         """
-        :exception 安全退出
+        安全退出
         """
         self.driverObj.quit()
+
+        self._Log.info('Driver be destroyed .. >> end')
 
     def find_element(self, element_dict: dict, wait: int = 20):
         """
@@ -99,11 +98,14 @@ class Driver(object):
                 self.driverObj, wait, tolerance=False, log_output=False)
 
             dore = anchor_ele
+            if CONST_ELEMENT_ID in element_dict[CONST_ANCHOR_ELEMENT]:
+                print()
+                dore = dore[element_dict[CONST_ANCHOR_ELEMENT][CONST_ELEMENT_ID] - 1]
 
         r_module = self.__finds_all_packaging_logical_thinking(
             element_dict[CONST_ELEMENT_BY],
             element_dict[CONST_ELEMENT_EL],
-            dore, wait,  tolerance=False, log_output=False)
+            dore, wait, tolerance=False, log_output=False)
 
         # 携带 CONST_ELEMENT_ID 参数时，会返回一个只包含该下标元素的列表
         if CONST_ELEMENT_ID in element_dict.keys():
@@ -130,7 +132,7 @@ class Driver(object):
         :return                     : WebElement 对象列表 / None 值
         """
         try:
-            obtain = WebDriverWait(dore, wait, ignored_exceptions=None). \
+            obtain = WebDriverWait(dore, wait, ignored_exceptions=None).\
                 until(ec.presence_of_all_elements_located((by, el)))
 
             return obtain

@@ -2,3 +2,5 @@ PyYAML
 selenium
 appium
 Appium-Pyhon-Client
+allure-pytest
+allure-python-commons

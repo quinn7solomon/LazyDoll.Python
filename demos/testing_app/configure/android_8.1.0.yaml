@@ -1,0 +1,13 @@
+deviceName: Android Emulator
+newCommandTimeout: 60
+platformName: Android
+platformVersion: 8.1.0
+
+app:
+appPackage:
+appActivity:
+
+noReset: false
+resetKeyboard: true
+unicodeKeyboard: true
+autoGrantPermissions: true

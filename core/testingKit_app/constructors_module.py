@@ -23,13 +23,10 @@ from appium.webdriver.common.touch_action import TouchAction
 
 from core.common.log import Log
 
+from core.testingKit_app.const import *
+
 
 __all__ = ['ConstructorsModule']
-
-
-# 常量
-CONST_ELEMENT_PAGE_NAME = 'pg_name'
-CONST_ELEMENT_BUTTON_NAME = 'bn_name'
 
 
 class ConstructorsModule(object):
@@ -59,7 +56,7 @@ class ConstructorsModule(object):
         self._driverHandleObj = driver_handle
         self._elementDict = element_dict
 
-    def _analytical_elements(self, wait: int = None):
+    def _analytical_elements(self, wait: int = 20):
         """
         解析函数
         """
@@ -110,13 +107,17 @@ class ConstructorsModule(object):
         """
         try:
             self._analytical_elements()
+            text = self._elementList[element_id - 1].text
             TouchAction(self._driverHandleObj.driverObj).\
                 tap(self._elementList[element_id - 1], count=click_number).perform()
 
             if log_output:
-                self._Log.info(f'点击事件'
-                               f' -> {self._elementDict[CONST_ELEMENT_PAGE_NAME]}'
-                               f' -> {self._elementDict[CONST_ELEMENT_BUTTON_NAME]}')
+                log_output_info = f'点击事件 ' \
+                                  f' -> {self._elementDict[CONST_ELEMENT_PAGE_NAME]}'\
+                                  f' -> {self._elementDict[CONST_ELEMENT_BUTTON_NAME]}'
+                if text != '':
+                    log_output_info += f' -> [{text}]'
+                self._Log.info(log_output_info)
 
         except Exception as err:
             self._Log.error(f'ConstructorsModule.tap 函数异常，详情信息: {err}')
@@ -192,7 +193,7 @@ class ConstructorsModule(object):
                 self._Log.info(f'元素存在'
                                f' -> {self._elementDict[CONST_ELEMENT_PAGE_NAME]}'
                                f' -> {self._elementDict[CONST_ELEMENT_BUTTON_NAME]}'
-                               f' -> [{element_id}')
+                               f' -> [{element_id}]')
             return True
 
         else:
@@ -200,7 +201,7 @@ class ConstructorsModule(object):
                 self._Log.info(f'元素不存在'
                                f' -> {self._elementDict[CONST_ELEMENT_PAGE_NAME]}'
                                f' -> {self._elementDict[CONST_ELEMENT_BUTTON_NAME]}'
-                               f' -> [{element_id}')
+                               f' -> [{element_id}]')
             return False
 
 

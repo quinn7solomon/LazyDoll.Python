@@ -207,6 +207,19 @@ class ConstructorsApp(object):
         """
         self._driverObj.close_app()
 
+    def app_open_activity(self, app_name: str, package: str, activity: str, log_output: bool = True):
+        """
+        启动给定包名与启动名的应用
+
+        :param app_name             : 应用程序名称
+        :param package              : 应用程序包名
+        :param activity             : 应用程序启动名
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        self._driverObj.start_activity(package, activity)
+        if log_output:
+            self._Log.info(f'打开应用程序 -> {app_name}')
+
     # 重复调用的代码封装
 
     def __press_keys(self, key: int, number: int, wait: int, key_name: str, log_output: bool):
