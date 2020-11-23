@@ -21,7 +21,7 @@
 
 import logging
 
-from global_parameter import *
+from core.global_parameter import *
 
 
 __all__ = ['Log']

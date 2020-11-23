@@ -1,29 +1,27 @@
-import os
-import time
-import shutil
+# /usr/bin/env python3.8
+# -*- coding=utf-8 -*-
+"""
+     ___      _______  _______  __   __  ______   _______  ___      ___              _______  __   __
+    |   |    |   _   ||       ||  | |  ||      | |       ||   |    |   |            |       ||  | |  |
+    |   |    |  |_|  ||____   ||  |_|  ||  _    ||   _   ||   |    |   |            |    _  ||  |_|  |
+    |   |    |       | ____|  ||       || | |   ||  | |  ||   |    |   |            |   |_| ||       |
+    |   |___ |       || ______||_     _|| |_|   ||  |_|  ||   |___ |   |___         |    ___||_     _|
+    |       ||   _   || |_____   |   |  |       ||       ||       ||       | _____  |   |      |   |
+    |_______||__| |__||_______|  |___|  |______| |_______||_______||_______||_____| |___|      |___|
 
-from demos.testing_app.solution_parameter import *
+    Copyright (c) 2020, @ quinn.7@foxmail.com, All rights reserved
 
+    GitPath      : https://github.com/quinn7solomon/LazyDoll_Python
+    FrameName    : LazyDoll_Python
+    CreatorName  : Quinn7k
+    CreationTime : 2020.11.19
+    Environment  : PyCharm
 
-# 测试报告名称
-reports_name_prefix = 'LazyDollDemoTestingApp'
-reports_name_suffix = time.strftime('%Y%m%d', time.localtime())
-reports_name = reports_name_prefix + '-' + reports_name_suffix
+"""
 
-# 测试报告输出XML目录 Path
-reports_output_xml_path = GLOBAL_DIR_PATH_REPORTS.joinpath(reports_name + 'allureXml')
-# 测试报告输出HTML目录 Path
-reports_output_html_path = GLOBAL_DIR_PATH_REPORTS.joinpath(reports_name + 'allureHtml')
-
-os.system(f'pytest -v '
-          f'{GLOBAL_DIR_PATH_CASES.joinpath("test_01_case_system.py")} '
-          f'--alluredir={reports_output_xml_path}')
-
-os.system(
-    f'allure generate {reports_output_xml_path} -o {reports_output_html_path} --clean')
-
-shutil.rmtree(reports_output_xml_path, ignore_errors=True)
+from core.windows_gui.gui_quick_start import GuiQuickStart
 
 
-
+if __name__ == '__main__':
+    GuiQuickStart().running_windows()
 

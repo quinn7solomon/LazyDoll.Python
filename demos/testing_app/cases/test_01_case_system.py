@@ -33,6 +33,7 @@ import allure
 
 # 引入 core 库的 Log 类
 from core.common.log import Log
+
 # 引入 core 库的 Puppeteer 类
 from core.testingKit_app.puppeteer import Puppeteer
 

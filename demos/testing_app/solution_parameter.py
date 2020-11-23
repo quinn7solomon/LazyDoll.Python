@@ -19,7 +19,7 @@
 
 """
 
-from global_parameter import *
+from core.global_parameter import *
 
 
 # 项目全局参数注册

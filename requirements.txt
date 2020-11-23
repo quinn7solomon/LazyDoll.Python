@@ -4,3 +4,4 @@ appium
 Appium-Pyhon-Client
 allure-pytest
 allure-python-commons
+dearpygui
