@@ -21,9 +21,9 @@
 
 from core.common.log import Log
 
-from core.testingKit_app.const import *
+from core.const import *
 
-from core.testingKit_app.puppeteer import Puppeteer
+from core.testingKit_app.puppeteer import PuppeteerLiving
 
 
 __all__ = ['ModeSystem']
@@ -40,9 +40,9 @@ class ModeSystem(object):
     _Log = Log()
 
     # Puppeteer 实例
-    _puppeteerObj: Puppeteer = None
+    _puppeteerObj: PuppeteerLiving = None
 
-    def __init__(self, puppeteer_obj: Puppeteer):
+    def __init__(self, puppeteer_obj):
         """
         初始化
 

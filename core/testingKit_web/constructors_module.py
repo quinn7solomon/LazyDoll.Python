@@ -19,12 +19,12 @@
 
 """
 
-from appium.webdriver.common.touch_action import TouchAction
-from appium.webdriver.webdriver import WebDriver
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.touch_actions import TouchActions
 
 from core.const import *
 from core.common.log import Log
-from core.testingKit_app.driver import Driver
+from core.testingKit_web.driver import RegisteredDriver
 
 
 __all__ = ['ConstructorsModule']
@@ -39,12 +39,12 @@ class ConstructorsModule(object):
     _Log = Log()
 
     # Driver 实例
-    _driver: Driver = None
+    _driver: RegisteredDriver = None
     # DriverCore 实例
     _driverCore: WebDriver = None
 
     # TouchAction 类
-    _touchAction = TouchAction
+    _touchAction = TouchActions
 
     # 元素信息字典
     _elementDict = None
@@ -67,7 +67,6 @@ class ConstructorsModule(object):
         """
         解析函数
         """
-        print(self._driver)
         self._elementList = self._driver.find_element(self._elementDict, wait=wait)
 
     def get_el_len(self, log_output: bool = True):
@@ -105,19 +104,18 @@ class ConstructorsModule(object):
 
         return text
 
-    def tap(self, element_id: int = 1, click_number: int = 1, log_output: bool = True):
+    def tap(self, element_id: int = 1, log_output: bool = True):
         """
         模拟一次作用于 WebElement 对象上的点击操作
 
         :param element_id           : 元素列表下标
-        :param click_number         : 点击次数
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
         """
         try:
             self._analytical_elements()
             text = self._elementList[element_id - 1].text
             self._touchAction(self._driver.driverObj).\
-                tap(self._elementList[element_id - 1], count=click_number).perform()
+                tap(self._elementList[element_id - 1]).perform()
 
             if log_output:
                 log_output_info = f'点击事件 ' \

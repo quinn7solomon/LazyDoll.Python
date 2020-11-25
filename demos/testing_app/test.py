@@ -1,19 +1,12 @@
-import time
-
 from core.testingKit_app.puppeteer import Puppeteer
+
 from demos.testing_app.solution_parameter import *
-from demos.testing_app.modes.mode_chrome import ModeChrome
+from demos.testing_app.modes.mode_system import ModeSystem
 
-# Puppeteer 实例
-PuppeteerObj = Puppeteer(SOLUTION_DRIVER_CONFIG_PATH)
 
-# 元素模型
-ModeChrome = ModeChrome(PuppeteerObj)
+puppeteer = Puppeteer.get_driver(SOLUTION_DRIVER_CONFIG_PATH)
 
-ModeChrome.open_app()
-ModeChrome.search.tap()
-ModeChrome.url_bar.send('www.baidu.com')
-ModeChrome.search_result.tap()
+mode = ModeSystem(puppeteer)
 
-PuppeteerObj.quit()
+mode.home_upward_arrows.tap()
 

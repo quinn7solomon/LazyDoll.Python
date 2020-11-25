@@ -21,46 +21,15 @@
 
 import random
 
-from appium import webdriver
-from appium.webdriver.webdriver import WebDriver
+from selenium import webdriver
+from selenium.webdriver.remote.webdriver import WebDriver
 
+from core.const import *
 from core.common.log import Log
 from core.common.find import Find
-from core.common.tools import Tools
 
 
 __all__ = ['Driver', 'RegisteredDriver']
-
-
-# class Driver(Find):
-#     """
-#     Driver 设备驱动模块
-#     """
-#
-#     # Driver 实例
-#     driverObj: WebDriver = None
-#
-#     # 配置文件路径
-#     _configPath = None
-#
-#     # 配置参数容器
-#     _configData = None
-#
-#     def __init__(self, config_path: str, interface: str = '4723'):
-#         """
-#         初始化，生成 Android / Ios 设备的 driver 驱动器
-#
-#         :param config_path        : Yaml 格式的配置文件绝对路径
-#         :param interface          : Appium Server 使用的端口
-#         """
-#         try:
-#             self._configPath = config_path
-#             self._configData = Tools.load_from_yaml(self._configPath)
-#             self.driverObj = webdriver.Remote(f'http://localhost:{interface}/wd/hub', self._configData)
-#             self._Log.info('Driver has started .. >> running')
-#
-#         except Exception as err:
-#             self._Log.warning(f'Driver 配置解析失败，详情信息: {err}')
 
 
 class Driver(object):
@@ -90,14 +59,20 @@ class DriverObj(object):
     registeredDriverMapDict = {}
 
     @staticmethod
-    def get_driver(config_path: str, interface: str = '4723', driver_name: str or None = None):
+    def get_driver_chrome(driver_name: str or None = None):
         """
-        获取 Android / Ios 设备的 driver 驱动器
+        获取 谷歌浏览器 驱动
         """
-        driverObj = webdriver.Remote(f'http://localhost:{interface}/wd/hub', Tools.load_from_yaml(config_path))
+
+        # Chrome浏览器 提供 W3C 校验的解决方案
+        # if :: Cannot call non W3C standard command while in W3C mode
+        opt = webdriver.ChromeOptions()
+        opt.add_experimental_option('w3c', False)
+
         return RegisteredDriver(
-            driver_obj=driverObj,
+            driver_obj=webdriver.Chrome(chrome_options=opt),
             driver_name=driver_name,
+            driver_type=CONST_DRIVER_TYPE_CHROME
         )
 
     def quit(self, driver_name: str):
@@ -117,13 +92,21 @@ class RegisteredDriver(Find):
 
     driverObj: WebDriver = None
     driverName = None
+    driverType = None
 
-    def __init__(self, driver_obj, driver_name):
+    def __init__(self, driver_obj, driver_name, driver_type):
         self.driverObj = driver_obj
         self.driverName = self._register_driver_flow(driver_name)
+        self.driverType = driver_type
 
         # 注册映射
         DriverObj.registeredDriverMapDict[self.driverName] = self.driverObj
+
+    def goto_url(self, url: str):
+        """
+        访问 URL
+        """
+        self.driverObj.get(url)
 
     @staticmethod
     def _register_driver_flow(driver_name: str or None) -> str:

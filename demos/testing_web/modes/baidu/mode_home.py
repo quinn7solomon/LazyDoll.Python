@@ -23,18 +23,18 @@ from core.common.log import Log
 
 from core.const import *
 
-from core.testingKit_app.puppeteer import PuppeteerLiving
+from core.testingKit_web.puppeteer import PuppeteerLiving
 
 
-__all__ = ['ModeChrome']
+__all__ = ['ModeHome']
 
 
-class ModeChrome(object):
+class ModeHome(object):
     """
-    元素模型 - 谷歌浏览器模型
+    元素模型 - 百度首页
     """
 
-    pageName = '谷歌浏览器模型'
+    pageName = '百度首页'
 
     # 日志服务
     _Log = Log()
@@ -49,16 +49,6 @@ class ModeChrome(object):
         :param puppeteer_obj    : Puppeteer 实例
         """
         self._puppeteerObj = puppeteer_obj
-
-    def open_app(self):
-        """
-        启动谷歌浏览器
-        """
-        self.app.app_open_activity(
-            app_name='谷歌浏览器',
-            package=' com.android.chrome',
-            activity='com.google.android.apps.chrome.Main'
-        )
 
     @property
     def app(self):
@@ -75,45 +65,31 @@ class ModeChrome(object):
         return self._puppeteerObj.view()
 
     @property
-    def search(self):
+    def home_search(self):
         """
         搜索框
         """
         return self._puppeteerObj.module(
             {
-                CONST_ELEMENT_BY: 'id',
-                CONST_ELEMENT_EL: 'com.android.chrome:id/search_box_text',
+                CONST_ELEMENT_BY: 'xpath',
+                CONST_ELEMENT_EL: '//input[@id="kw"]',
 
                 CONST_ELEMENT_PAGE_NAME: self.pageName,
                 CONST_ELEMENT_BUTTON_NAME: '搜索框',
             })
 
     @property
-    def url_bar(self):
+    def home_search_confirm(self):
         """
-        URL输入框
-        """
-        return self._puppeteerObj.module(
-            {
-                CONST_ELEMENT_BY: 'id',
-                CONST_ELEMENT_EL: 'com.android.chrome:id/url_bar',
-
-                CONST_ELEMENT_PAGE_NAME: self.pageName,
-                CONST_ELEMENT_BUTTON_NAME: 'URL输入框',
-            })
-
-    @property
-    def search_result(self):
-        """
-        搜索结果
+        搜索框 - 百度一下
         """
         return self._puppeteerObj.module(
             {
                 CONST_ELEMENT_BY: 'xpath',
-                CONST_ELEMENT_EL: "//*[@class='android.widget.TextView']",
+                CONST_ELEMENT_EL: '//input[@id="su"]',
 
                 CONST_ELEMENT_PAGE_NAME: self.pageName,
-                CONST_ELEMENT_BUTTON_NAME: '搜索结果',
+                CONST_ELEMENT_BUTTON_NAME: '搜索框.百度一下',
             })
 
 

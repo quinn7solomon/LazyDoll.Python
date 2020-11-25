@@ -42,14 +42,13 @@
     button.on_in_page()
 
 """
-
 from core.common.log import Log
-from core.testingKit_app.driver import Driver
-from core.testingKit_app.driver import RegisteredDriver
+from core.testingKit_web.driver import Driver
+from core.testingKit_web.driver import RegisteredDriver
 
-from core.testingKit_app.constructors_app import ConstructorsApp
-from core.testingKit_app.constructors_view import ConstructorsView
-from core.testingKit_app.constructors_module import ConstructorsModule
+from core.testingKit_web.constructors_app import ConstructorsApp
+from core.testingKit_web.constructors_view import ConstructorsView
+from core.testingKit_web.constructors_module import ConstructorsModule
 
 
 __all__ = ['Puppeteer', 'PuppeteerLiving']
@@ -61,14 +60,11 @@ class Puppeteer(object):
     _Log = Log()
 
     @staticmethod
-    def get_driver(config_path: str, interface: str = '4723'):
+    def get_driver_chrome():
         """
-        初始化，通过 Driver 类创建驱动器对象
-
-        :param config_path        : Yaml 格式的配置文件路径
-        :param interface          : Appium Server 使用的端口
+        调用 谷歌浏览器 驱动生成 PuppeteerLiving 类
         """
-        return PuppeteerLiving(Driver().get_driver(config_path, interface=interface))
+        return PuppeteerLiving(Driver().get_driver_chrome())
 
 
 class PuppeteerLiving(object):

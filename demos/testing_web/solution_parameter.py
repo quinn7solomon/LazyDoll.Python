@@ -19,10 +19,12 @@
 
 """
 
-from core.windows_gui.gui_quick_start import GuiQuickStart
+from core.global_parameter import *
+
+
+# 项目全局参数注册
 
 
 if __name__ == '__main__':
-    # 运行GUI
-    GuiQuickStart().running_windows()
+    pass
 

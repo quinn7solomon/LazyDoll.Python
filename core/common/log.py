@@ -41,6 +41,7 @@ class Log(object):
         'streamHandler_level': 'INFO',
 
         'fileHandler_list': {
+
             'debug_file': {
                 'name': f'{GLOBAL_ROOT_NAME}_DeBug.log',
                 'level': 'DEBUG',

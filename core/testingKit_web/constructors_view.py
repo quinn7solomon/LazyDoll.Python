@@ -19,10 +19,44 @@
 
 """
 
-from core.windows_gui.gui_quick_start import GuiQuickStart
+import time
+
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.touch_actions import TouchActions
+
+from core.common.log import Log
+from core.testingKit_web.driver import RegisteredDriver
+
+
+__all__ = ['ConstructorsView']
+
+
+class ConstructorsView(object):
+    """
+    屏幕组件实现类
+    """
+
+    # 日志服务
+    _Log = Log()
+
+    # Driver 实例
+    _driver: RegisteredDriver = None
+    # DriverCore 实例
+    _driverCore: WebDriver = None
+
+    # TouchAction 类
+    _touchAction = TouchActions
+
+    def __init__(self, driver):
+        """
+        初始化
+
+        :param driver        : Driver 实例
+        """
+        self._driver = driver
+        self._driverCore = driver.driverObj
 
 
 if __name__ == '__main__':
-    # 运行GUI
-    GuiQuickStart().running_windows()
+    pass
 
