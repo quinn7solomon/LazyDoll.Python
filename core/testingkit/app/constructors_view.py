@@ -25,7 +25,7 @@ from appium.webdriver.webdriver import WebDriver
 from appium.webdriver.common.touch_action import TouchAction
 
 from core.common.log import Log
-from core.testingKit_app.driver import Driver
+from core.testingkit.app.driver import Driver
 
 
 __all__ = ['ConstructorsView']

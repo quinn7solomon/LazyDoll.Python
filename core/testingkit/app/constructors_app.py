@@ -24,6 +24,9 @@ import time
 from appium.webdriver.webdriver import WebDriver
 
 from core.common.log import Log
+from core.testingkit.app.driver import RegisteredDriver
+from core.common.customize_exception import DevicePhysicalKeyException
+from core.common.customize_exception import NetworkSwitchEventException
 
 
 __all__ = ['ConstructorsApp']
@@ -31,107 +34,107 @@ __all__ = ['ConstructorsApp']
 
 class ConstructorsApp(object):
     """
-    程序组件实现类
+    程序组件实现类 \n
     """
 
     # 日志服务
-    _Log = Log()
+    _logServer = Log()
 
-    # Driver 实例
-    _driver: WebDriver = None
+    # RegisteredDriver 实例
+    _registeredDriver: RegisteredDriver = None
     # DriverCore 实例
     _driverCore: WebDriver = None
 
-    def __init__(self, driver):
+    def __init__(self, registered_driver: RegisteredDriver):
         """
-        初始化
+        初始化 \n
 
-        :param driver        : Driver 实例
+        :param registered_driver : RegisteredDriver 对象
         """
-        self._driver = driver
-        self._driverCore = driver.driverObj
+        self._registeredDriver = registered_driver
+        self._driverCore = registered_driver.get_driver_core()
 
     def sleep(self, sleep_time: int, log_output: bool = True):
         """
-        应用休眠
+        应用休眠 \n
 
         :param sleep_time    : 休眠的时长，单位是秒
         :param log_output    : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
         """
         if log_output:
-            self._Log.info(f'应用进入后台休眠 -> {sleep_time} 秒')
+            self._logServer.info(f'Application goes to sleep in the background -> {sleep_time} s')
             self._driverCore.background_app(sleep_time)
-            self._Log.info('应用完成后台休眠 -> 重新唤起')
+            self._logServer.info('Application completes background sleep -> To revive')
         else:
             self._driverCore.background_app(sleep_time)
 
     def keyboard_home(self, number: int = 1, wait: int = 0, log_output: bool = True):
         """
-        模拟设备物理键 - HOME键
+        模拟设备物理键 - HOME键 \n
 
         :param number        : 按键次数
         :param wait          : 动作执行完毕的等待时长
         :param log_output    : 执行完毕后是否打印成功日志，False 则表示不输出成功日志
         """
-        self._press_keys(3, number=number, wait=wait, key_name='HOME键', log_output=log_output)
+        self._press_keys(3, number=number, wait=wait, key_name='Key-Home', log_output=log_output)
 
     def keyboard_back(self, number: int = 1, wait: int = 0, log_output: bool = True):
         """
-        模拟设备物理键 - 返回键
+        模拟设备物理键 - 返回键 \n
         """
-        self._press_keys(4, number=number, wait=wait, key_name='返回键', log_output=log_output)
+        self._press_keys(4, number=number, wait=wait, key_name='Key-Back', log_output=log_output)
 
     def keyboard_supply(self, number: int = 1, wait: int = 0, log_output: bool = True):
         """
-        模拟设备物理键 - 电源键
+        模拟设备物理键 - 电源键 \n
         """
-        self._press_keys(26, number=number, wait=wait, key_name='电源键', log_output=log_output)
+        self._press_keys(26, number=number, wait=wait, key_name='Key-Supply', log_output=log_output)
 
-    def keyboard_voice_up(self, number: int = 1, wait: int = 0, log_output: bool = True):
+    def keyboard_volume_up(self, number: int = 1, wait: int = 0, log_output: bool = True):
         """
-        模拟设备物理键 - 音量增加键
+        模拟设备物理键 - 音量增加键 \n
         """
-        self._press_keys(24, number=number, wait=wait, key_name='音量 + 键', log_output=log_output)
+        self._press_keys(24, number=number, wait=wait, key_name='Key-VolumeUp', log_output=log_output)
 
-    def keyboard_voice_low(self, number: int = 1, wait: int = 0, log_output: bool = True):
+    def keyboard_volume_down(self, number: int = 1, wait: int = 0, log_output: bool = True):
         """
-        模拟设备物理键 - 音量减少键
+        模拟设备物理键 - 音量减少键 \n
         """
-        self._press_keys(25, number=number, wait=wait, key_name='音量 - 键', log_output=log_output)
+        self._press_keys(25, number=number, wait=wait, key_name='Key-VolumeDown', log_output=log_output)
 
-    def set_network_flight(self, log_output: bool = True):
+    def set_network_airplane_mode(self, log_output: bool = True):
         """
-        切换网络 - 飞行模式
+        切换网络 - 飞行模式 \n
         """
-        self.__set_network(1, '飞行模式', log_output=log_output)
+        self.__set_network(1, 'Network-Airplane-Mode', log_output=log_output)
 
     def set_network_wifi(self, log_output: bool = True):
         """
-        切换网络 - WIFI模式
+        切换网络 - WIFI模式 \n
         """
-        self.__set_network(2, 'WIFI模式', log_output=log_output)
+        self.__set_network(2, 'Network-Wifi', log_output=log_output)
 
     def set_network_data(self, log_output: bool = True):
         """
-        切换网络 - 数据模式
+        切换网络 - 数据模式 \n
         """
-        self.__set_network(4, '数据模式', log_output=log_output)
+        self.__set_network(4, 'Network-Data', log_output=log_output)
 
     def set_network_all_on(self, log_output: bool = True):
         """
-        切换网络 - 有网模式
+        切换网络 - 有网模式 \n
         """
-        self.__set_network(6, '有网模式', log_output=log_output)
+        self.__set_network(6, 'Network-All-On', log_output=log_output)
 
     def set_network_all_off(self, log_output: bool = True):
         """
-        切换网络 - 无网模式
+        切换网络 - 无网模式 \n
         """
-        self.__set_network(0, '无网模式', log_output=log_output)
+        self.__set_network(0, 'Network-All-Off', log_output=log_output)
 
     def get_package(self) -> str:
         """
-        获取应用的包名
+        获取应用的包名 \n
 
         :return package : 当前打开的应用包名
         """
@@ -139,7 +142,7 @@ class ConstructorsApp(object):
 
     def get_activity(self) -> str:
         """
-        获取应用的启动名
+        获取应用的启动名 \n
 
         :return activity : 当前打开的应用启动名
         """
@@ -147,7 +150,7 @@ class ConstructorsApp(object):
 
     def get_screen(self, pc_path: str):
         """
-        截取手机当前屏幕，保存至指定位置
+        截取手机当前屏幕，保存至指定位置 \n
 
         :param pc_path : 截取图片所存放的 Pc 端绝对路径
         """
@@ -155,7 +158,7 @@ class ConstructorsApp(object):
 
     def app_is_installed(self, package: str) -> bool:
         """
-        检查应用是否安装
+        检查应用是否安装 \n
 
         :param package : APP应用的包名
         """
@@ -163,7 +166,7 @@ class ConstructorsApp(object):
 
     def app_install(self, apk_path):
         """
-        应用安装
+        应用安装 \n
 
         :param apk_path : APP应用的安装包路径
         """
@@ -171,7 +174,7 @@ class ConstructorsApp(object):
 
     def app_uninstall(self, package: str):
         """
-        应用卸载
+        应用卸载 \n
 
         :param package : APP应用的包名
         """
@@ -179,19 +182,19 @@ class ConstructorsApp(object):
 
     def closed_keyboard(self):
         """
-        收起键盘
+        收起键盘 \n
         """
         self._driverCore.hide_keyboard()
 
     def open_radio(self):
         """
-        打开通知栏
+        打开通知栏 \n
         """
         self._driverCore.open_notifications()
 
     def shake(self, number=1):
         """
-        摇晃手机
+        摇晃手机 \n
 
         :param number: 摇晃的次数
         """
@@ -200,19 +203,19 @@ class ConstructorsApp(object):
 
     def app_open(self):
         """
-        启动应用
+        启动配置中指定的应用 \n
         """
         self._driverCore.launch_app()
 
     def app_close(self):
         """
-        关闭应用
+        关闭应用 \n
         """
         self._driverCore.close_app()
 
     def app_open_activity(self, app_name: str, package: str, activity: str, log_output: bool = True):
         """
-        启动给定包名与启动名的应用
+        启动给定包名与启动名的应用 \n
 
         :param app_name             : 应用程序名称
         :param package              : 应用程序包名
@@ -221,13 +224,13 @@ class ConstructorsApp(object):
         """
         self._driverCore.start_activity(package, activity)
         if log_output:
-            self._Log.info(f'打开应用程序 -> {app_name}')
+            self._logServer.info(f'Starts the application with the given package name and startup name -> {app_name}')
 
     # 重复调用的代码封装
 
     def _press_keys(self, key: int, number: int, wait: int, key_name: str, log_output: bool):
         """
-        物理键事件，模拟物理键的一些操作
+        物理键事件，模拟物理键的一些操作 \n
 
         :param key                  : 物理键的编号
         :param number               : 按键次数
@@ -241,15 +244,14 @@ class ConstructorsApp(object):
                 self._driverCore.keyevent(key)
                 time.sleep(wait)
             if log_output:
-                self._Log.info(f'模拟按下物理键 -> {key_name}')
+                self._logServer.info(f'Simulate pressing the physical key -> {key_name}')
 
-        except Exception as err:
-            self._Log.error(f'物理键事件异常，详情信息: {err}')
-            raise
+        except Exception:
+            raise DevicePhysicalKeyException
 
     def __set_network(self, net_key: int, net_name: str, log_output: bool):
         """
-        网络切换事件
+        网络切换事件 \n
 
         :param net_key              : 网络状态 key
         :param net_name             : 网络状态 name
@@ -258,11 +260,10 @@ class ConstructorsApp(object):
         try:
             self._driverCore.set_network_connection(net_key)
             if log_output:
-                self._Log.info(f'切换网络状态 -> {net_name}')
+                self._logServer.info(f'Switching network state -> {net_name}')
 
-        except Exception as err:
-            self._Log.error(f'网络切换事件异常，详情信息: {err}')
-            raise
+        except Exception:
+            raise NetworkSwitchEventException
 
 
 if __name__ == '__main__':

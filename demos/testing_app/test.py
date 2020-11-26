@@ -1,12 +1,32 @@
-from core.testingKit_app.puppeteer import Puppeteer
+import time
 
-from demos.testing_app.solution_parameter import *
-from demos.testing_app.modes.mode_system import ModeSystem
+from core.const import Const
+from core.common.element_structure import ElementStructure
+from core.testingkit.app.driver import Driver
+from core.testingkit.app.puppeteer import Puppeteer
+from core.const import GlobalVariate
 
+driver_handle = Driver()
+driver = driver_handle.get_driver(GlobalVariate.DIR_PATH_CONFIG.joinpath('android_8.1.0.yaml'))
+puppeteer = Puppeteer(driver)
 
-puppeteer = Puppeteer.get_driver(SOLUTION_DRIVER_CONFIG_PATH)
+a = puppeteer.module(ElementStructure({
+    Const.ELEMENT_BY: 'id',
+    Const.ELEMENT_EL: 'com.google.android.apps.nexuslauncher:id/all_apps_handle',
+    Const.ELEMENT_PAGE_NAME: '系统',
+    Const.ELEMENT_ELEMENT_NAME: '向上箭头'
+}))
 
-mode = ModeSystem(puppeteer)
+print(a)
+a.get_element_len()
+a.get_text()
+a.in_page()
+a.tap()
+time.sleep(5)
+a.in_page()
 
-mode.home_upward_arrows.tap()
+print(driver_handle.get_registered_driver_list())
+print(driver_handle.get_registered_driver_map_dict())
+print(puppeteer)
+print(type(puppeteer))
 

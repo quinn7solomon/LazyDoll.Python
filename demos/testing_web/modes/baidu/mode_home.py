@@ -21,9 +21,7 @@
 
 from core.common.log import Log
 
-from core.const import *
-
-from core.testingKit_web.puppeteer import PuppeteerLiving
+from core.testingkit.web.puppeteer import PuppeteerLiving
 
 
 __all__ = ['ModeHome']

@@ -20,17 +20,18 @@
 """
 
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.touch_actions import TouchActions
 
 from core.common.log import Log
-from core.testingKit_web.driver import RegisteredDriver
+from core.testingkit.web.driver import RegisteredDriver
 
 
-__all__ = ['ConstructorsApp']
+__all__ = ['ConstructorsView']
 
 
-class ConstructorsApp(object):
+class ConstructorsView(object):
     """
-    程序组件实现类
+    屏幕组件实现类
     """
 
     # 日志服务
@@ -41,6 +42,9 @@ class ConstructorsApp(object):
     # DriverCore 实例
     _driverCore: WebDriver = None
 
+    # TouchAction 类
+    _touchAction = TouchActions
+
     def __init__(self, driver):
         """
         初始化
@@ -49,9 +53,6 @@ class ConstructorsApp(object):
         """
         self._driver = driver
         self._driverCore = driver.driverObj
-
-    def goto_url(self, url: str):
-        self._driver.goto_url(url)
 
 
 if __name__ == '__main__':

@@ -35,7 +35,7 @@ import allure
 from core.common.log import Log
 
 # 引入 testingKit_app 库的 Puppeteer 类
-from core.testingKit_app.puppeteer import Puppeteer
+from core.testingkit.app.puppeteer import _PuppeteerCore
 
 # 引入 testing_app 项目的全局参数
 from demos.testing_app.solution_parameter import *
@@ -51,7 +51,7 @@ class Test01CaseSystem(object):
     Log = Log()
 
     # Puppeteer 实例
-    PuppeteerObj = Puppeteer.get_driver(SOLUTION_DRIVER_CONFIG_PATH)
+    PuppeteerObj = _PuppeteerCore.get_driver(SOLUTION_DRIVER_CONFIG_PATH)
 
     # 元素模型
     ModeSystem = ModeSystem(PuppeteerObj)

@@ -21,7 +21,7 @@
 
 import logging
 
-from core.global_parameter import *
+from core.const import GlobalVariate
 
 
 __all__ = ['Log']
@@ -29,11 +29,11 @@ __all__ = ['Log']
 
 class Log(object):
     """
-    日志模块
+    日志类 \n
     """
 
     # 日志对象实例
-    loggingObj = None
+    loggingObject = None
 
     # 日志配置字典
     configureDict = {
@@ -43,22 +43,22 @@ class Log(object):
         'fileHandler_list': {
 
             'debug_file': {
-                'name': f'{GLOBAL_ROOT_NAME}_DeBug.log',
+                'name': f'{GlobalVariate.ROOT_NAME}_DeBug.log',
                 'level': 'DEBUG',
             },
 
             'info_file': {
-                'name': f'{GLOBAL_ROOT_NAME}_Info.log',
+                'name': f'{GlobalVariate.ROOT_NAME}_Info.log',
                 'level': 'INFO',
             },
 
             'error_file': {
-                'name': f'{GLOBAL_ROOT_NAME}_Error.log',
+                'name': f'{GlobalVariate.ROOT_NAME}_Error.log',
                 'level': 'ERROR',
             },
 
             'warning_file': {
-                'name': f'{GLOBAL_ROOT_NAME}_Warning.log',
+                'name': f'{GlobalVariate.ROOT_NAME}_Warning.log',
                 'level': 'WARNING',
             },
         }
@@ -69,34 +69,34 @@ class Log(object):
 
     def __new__(cls, *args, **kwargs):
         """
-        单例创建
+        单例创建 \n
 
         实例化该类的时候会调用 __new__ 函数，判断 loggingObj 是否为 None，若存在则引用，否则才会创建一个实例
 
         :return loggingObj         : 日志处理器实例对象
         """
 
-        if not cls.loggingObj:
-            cls.loggingObj = logging.getLogger()
+        if not cls.loggingObject:
+            cls.loggingObject = logging.getLogger()
 
             log_formatter = logging.Formatter(cls.logOutputStructure)
 
-            cls.loggingObj.setLevel(cls.configureDict['logging_level'])
-            cls.loggingObj.handlers.clear()
+            cls.loggingObject.setLevel(cls.configureDict['logging_level'])
+            cls.loggingObject.handlers.clear()
 
             streamHandler = logging.StreamHandler()
             streamHandler.setFormatter(log_formatter)
             streamHandler.setLevel(cls.configureDict['streamHandler_level'])
 
-            cls.loggingObj.addHandler(streamHandler)
+            cls.loggingObject.addHandler(streamHandler)
 
             for key, value in cls.configureDict['fileHandler_list'].items():
-                log_file_handle = logging.FileHandler(f'{GLOBAL_DIR_PATH_LOG.joinpath(value["name"])}')
+                log_file_handle = logging.FileHandler(f'{GlobalVariate.DIR_PATH_LOG.joinpath(value["name"])}')
                 log_file_handle.setLevel(value['level'])
                 log_file_handle.setFormatter(log_formatter)
-                cls.loggingObj.addHandler(log_file_handle)
+                cls.loggingObject.addHandler(log_file_handle)
 
-        return cls.loggingObj
+        return cls.loggingObject
 
 
 if __name__ == '__main__':

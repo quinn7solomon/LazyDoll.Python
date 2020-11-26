@@ -19,13 +19,44 @@
 
 """
 
-from core.global_parameter import *
+from selenium.webdriver.remote.webdriver import WebDriver
+
+from core.common.log import Log
+from core.testingkit.web.driver import RegisteredDriver
 
 
-# 项目全局参数注册
+__all__ = ['ConstructorsApp']
 
-# 设备参数配置文件 Path
-SOLUTION_DRIVER_CONFIG_PATH = GLOBAL_DIR_PATH_CONFIG.joinpath('android_8.1.0.yaml')
+
+class ConstructorsApp(object):
+    """
+    程序组件实现类 \n
+    """
+
+    # 日志服务
+    _logServer = Log()
+
+    # Driver 实例
+    _registeredDriver: RegisteredDriver = None
+    # DriverCore 实例
+    _driverCore: WebDriver = None
+
+    def __init__(self, registered_driver: RegisteredDriver):
+        """
+        初始化 \n
+
+        :param registered_driver : RegisteredDriver 对象
+        """
+        self._registeredDriver = registered_driver
+        self._driverCore = registered_driver.get_driver_core()
+
+    def goto_url(self, url: str):
+        """
+        浏览器跳转到指定URL \n
+
+        :param url               : 跳转目标URL
+        """
+        self._registeredDriver.goto_url(url)
 
 
 if __name__ == '__main__':

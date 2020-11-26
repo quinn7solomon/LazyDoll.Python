@@ -21,19 +21,21 @@
 
 import yaml
 
+from core.common.customize_exception import LoadYamlException
+
 
 __all__ = ['Tools']
 
 
 class Tools(object):
     """
-    工具类
+    工具类 \n
     """
 
     @staticmethod
     def load_from_yaml(file_path: str, mode: str = 'r', coding: str = 'utf-8') -> dict:
         """
-        读取 Yaml 格式文件数据
+        读取 Yaml 格式文件数据 \n
 
         :param file_path             : 文件路径
         :param mode                  : 打开模式
@@ -43,10 +45,11 @@ class Tools(object):
         """
         try:
             with open(file_path, mode, encoding=coding) as fp:
-                return yaml.load(fp, Loader=yaml.FullLoader)
+                # return yaml.load(fp, Loader=yaml.FullLoader)
+                return yaml.safe_load(fp)
 
         except BaseException:
-            raise FileNotFoundError
+            raise LoadYamlException
 
 
 if __name__ == '__main__':

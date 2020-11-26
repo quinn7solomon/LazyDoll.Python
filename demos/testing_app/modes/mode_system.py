@@ -21,9 +21,7 @@
 
 from core.common.log import Log
 
-from core.const import *
-
-from core.testingKit_app.puppeteer import PuppeteerLiving
+from core.testingkit.app.puppeteer import PuppeteerLiving
 
 
 __all__ = ['ModeSystem']
