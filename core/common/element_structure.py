@@ -16,6 +16,12 @@
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
 
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        ElementStructure 职责于解析元素信息字典并封装成了结构体
+
 """
 
 from core.const import Const

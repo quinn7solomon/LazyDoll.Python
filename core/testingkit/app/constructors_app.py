@@ -15,7 +15,14 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        ConstructorsApp 由 Puppeteer 进行集成
+
+        该模块的职责在于构建程序组件
 
 """
 
@@ -24,7 +31,7 @@ import time
 from appium.webdriver.webdriver import WebDriver
 
 from core.common.log import Log
-from core.testingkit.app.driver import RegisteredDriver
+from core.testingkit.app.driverhandle import RegisteredDriver
 from core.common.customize_exception import DevicePhysicalKeyException
 from core.common.customize_exception import NetworkSwitchEventException
 
@@ -106,31 +113,31 @@ class ConstructorsApp(object):
         """
         切换网络 - 飞行模式 \n
         """
-        self.__set_network(1, 'Network-Airplane-Mode', log_output=log_output)
+        self._set_network(1, 'Network-Airplane-Mode', log_output=log_output)
 
     def set_network_wifi(self, log_output: bool = True):
         """
         切换网络 - WIFI模式 \n
         """
-        self.__set_network(2, 'Network-Wifi', log_output=log_output)
+        self._set_network(2, 'Network-Wifi', log_output=log_output)
 
     def set_network_data(self, log_output: bool = True):
         """
         切换网络 - 数据模式 \n
         """
-        self.__set_network(4, 'Network-Data', log_output=log_output)
+        self._set_network(4, 'Network-Data', log_output=log_output)
 
     def set_network_all_on(self, log_output: bool = True):
         """
         切换网络 - 有网模式 \n
         """
-        self.__set_network(6, 'Network-All-On', log_output=log_output)
+        self._set_network(6, 'Network-All-On', log_output=log_output)
 
     def set_network_all_off(self, log_output: bool = True):
         """
         切换网络 - 无网模式 \n
         """
-        self.__set_network(0, 'Network-All-Off', log_output=log_output)
+        self._set_network(0, 'Network-All-Off', log_output=log_output)
 
     def get_package(self) -> str:
         """
@@ -249,7 +256,7 @@ class ConstructorsApp(object):
         except Exception:
             raise DevicePhysicalKeyException
 
-    def __set_network(self, net_key: int, net_name: str, log_output: bool):
+    def _set_network(self, net_key: int, net_name: str, log_output: bool):
         """
         网络切换事件 \n
 

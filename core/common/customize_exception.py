@@ -15,7 +15,8 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
 
 """
 
@@ -112,7 +113,7 @@ class ModuleTapEventException(_CustomizeException):
 
 class ModuleLongTapEventException(_CustomizeException):
     """
-    点击事件异常 \n
+    长按事件异常 \n
     """
     def __init__(self, err='Module long tap event exception'):
         self._logServer.error(err)
@@ -121,9 +122,18 @@ class ModuleLongTapEventException(_CustomizeException):
 
 class ModuleSendKeyEventException(_CustomizeException):
     """
-    点击事件异常 \n
+    键入事件异常 \n
     """
     def __init__(self, err='Module send key event exception'):
+        self._logServer.error(err)
+        Exception.__init__(self, err)
+
+
+class NewWindowsNameExistException(_CustomizeException):
+    """
+    浏览器标签页名称已注册 \n
+    """
+    def __init__(self, err='The browser TAB name is registered'):
         self._logServer.error(err)
         Exception.__init__(self, err)
 

@@ -15,13 +15,15 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
 
 """
 
+from core.const import Const
 from core.common.log import Log
+from core.common.element_structure import ElementStructure
 
-from core.testingkit.app.puppeteer import PuppeteerLiving
+from core.testingkit.app.driverhandle import RegisteredDriver
+from core.testingkit.app.puppeteer import PuppeteerCore
 
 
 __all__ = ['ModeChrome']
@@ -32,23 +34,23 @@ class ModeChrome(object):
     元素模型 - 谷歌浏览器模型
     """
 
-    pageName = '谷歌浏览器模型'
+    modeName = '谷歌浏览器模型'
 
     # 日志服务
-    _Log = Log()
+    _logServer = Log()
 
-    # Puppeteer 实例
-    _puppeteerObj: PuppeteerLiving = None
+    # PuppeteerCore 实例
+    _puppeteerCore: PuppeteerCore = None
 
-    def __init__(self, puppeteer_obj: PuppeteerLiving):
+    def __init__(self, registered_driver: RegisteredDriver):
         """
         初始化
 
-        :param puppeteer_obj    : Puppeteer 实例
+        :param registered_driver : RegisteredDriver 实例
         """
-        self._puppeteerObj = puppeteer_obj
+        self._puppeteerCore = PuppeteerCore(registered_driver)
 
-    def open_app(self):
+    def open_app_chrome(self):
         """
         启动谷歌浏览器
         """
@@ -63,56 +65,53 @@ class ModeChrome(object):
         """
         程序组件
         """
-        return self._puppeteerObj.app()
+        return self._puppeteerCore.app()
 
     @property
     def view(self):
         """
         屏幕组件
         """
-        return self._puppeteerObj.view()
+        return self._puppeteerCore.view()
 
     @property
     def search(self):
         """
         搜索框
         """
-        return self._puppeteerObj.module(
+        return self._puppeteerCore.module(ElementStructure(
             {
-                CONST_ELEMENT_BY: 'id',
-                CONST_ELEMENT_EL: 'com.android.chrome:id/search_box_text',
-
-                CONST_ELEMENT_PAGE_NAME: self.pageName,
-                CONST_ELEMENT_BUTTON_NAME: '搜索框',
-            })
+                Const.ELEMENT_BY: 'id',
+                Const.ELEMENT_EL: 'com.android.chrome:id/search_box_text',
+                Const.ELEMENT_PAGE_NAME: self.modeName,
+                Const.ELEMENT_ELEMENT_NAME: '搜索框',
+            }))
 
     @property
     def url_bar(self):
         """
         URL输入框
         """
-        return self._puppeteerObj.module(
+        return self._puppeteerCore.module(ElementStructure(
             {
-                CONST_ELEMENT_BY: 'id',
-                CONST_ELEMENT_EL: 'com.android.chrome:id/url_bar',
-
-                CONST_ELEMENT_PAGE_NAME: self.pageName,
-                CONST_ELEMENT_BUTTON_NAME: 'URL输入框',
-            })
+                Const.ELEMENT_BY: 'id',
+                Const.ELEMENT_EL: 'com.android.chrome:id/url_bar',
+                Const.ELEMENT_PAGE_NAME: self.modeName,
+                Const.ELEMENT_ELEMENT_NAME: 'URL输入框',
+            }))
 
     @property
     def search_result(self):
         """
         搜索结果
         """
-        return self._puppeteerObj.module(
+        return self._puppeteerCore.module(ElementStructure(
             {
-                CONST_ELEMENT_BY: 'xpath',
-                CONST_ELEMENT_EL: "//*[@class='android.widget.TextView']",
-
-                CONST_ELEMENT_PAGE_NAME: self.pageName,
-                CONST_ELEMENT_BUTTON_NAME: '搜索结果',
-            })
+                Const.ELEMENT_BY: 'xpath',
+                Const.ELEMENT_EL: '//*[@class="android.widget.TextView"]',
+                Const.ELEMENT_PAGE_NAME: self.modeName,
+                Const.ELEMENT_ELEMENT_NAME: '搜索结果',
+            }))
 
 
 if __name__ == '__main__':

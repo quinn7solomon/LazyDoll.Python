@@ -15,7 +15,14 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        ConstructorsApp 由 Puppeteer 进行集成
+
+        该模块的职责在于构建屏幕组件
 
 """
 
@@ -25,7 +32,7 @@ from appium.webdriver.webdriver import WebDriver
 from appium.webdriver.common.touch_action import TouchAction
 
 from core.common.log import Log
-from core.testingkit.app.driver import Driver
+from core.testingkit.app.driverhandle import DriverHandle
 
 
 __all__ = ['ConstructorsView']
@@ -33,13 +40,13 @@ __all__ = ['ConstructorsView']
 
 class ConstructorsView(object):
     """
-    屏幕组件实现类
+    屏幕组件实现类 \n
     """
     # 日志服务
     _Log = Log()
 
     # Driver 实例
-    _driver: Driver = None
+    _driver: DriverHandle = None
     # DriverCore 实例
     _driverCore: WebDriver = None
 
@@ -48,7 +55,7 @@ class ConstructorsView(object):
 
     def __init__(self, driver):
         """
-        初始化
+        初始化 \n
 
         :param driver        : Driver 实例
         """
@@ -57,35 +64,35 @@ class ConstructorsView(object):
 
     def adaption_swipe_up(self, speed: int = 1000, number: int = 1, wait: int = 1, log_output: bool = True):
         """
-        自适应滑动屏幕 Up ↑
+        自适应滑动屏幕 Up ↑ \n
         """
         self._adaption_swipe(x1=0.5, y1=0.25, x2=0.5, y2=0.75,
                              direction='向上滑屏', speed=speed, number=number, wait=wait, log_output=log_output)
 
     def adaption_swipe_down(self, speed: int = 1000, number: int = 1, wait: int = 1, log_output: bool = True):
         """
-        自适应滑动屏幕 down ↓
+        自适应滑动屏幕 down ↓ \n
         """
         self._adaption_swipe(x1=0.5, y1=0.75, x2=0.5, y2=0.25,
                              direction='向下滑屏', speed=speed, number=number, wait=wait, log_output=log_output)
 
     def adaption_swipe_left(self, speed: int = 1000, number: int = 1, wait: int = 1, log_output: bool = True):
         """
-        自适应滑动屏幕 left ←
+        自适应滑动屏幕 left ← \n
         """
         self._adaption_swipe(x1=0.25, y1=0.5, x2=0.75, y2=0.5,
                              direction='向左滑屏', speed=speed, number=number, wait=wait, log_output=log_output)
 
     def adaption_swipe_right(self, speed: int = 1000, number: int = 1, wait: int = 1, log_output: bool = True):
         """
-        自适应滑动屏幕 right →
+        自适应滑动屏幕 right → \n
         """
         self._adaption_swipe(x1=0.75, y1=0.5, x2=0.25, y2=0.5,
                              direction='向右滑屏', speed=speed, number=number, wait=wait, log_output=log_output)
 
     def tap_xy(self, x: int, y: int, log_output: bool = True):
         """
-        模拟一次指向 x, y 坐标上的点击操作
+        模拟一次指向 x, y 坐标上的点击操作 \n
 
         值得注意的是，不同的设备分辨率会导致固定像素的坐标落点存在差异，推荐使用自适应点击函数 tap_xy_adaption
 
@@ -105,7 +112,7 @@ class ConstructorsView(object):
 
     def tap_xy_adaption(self, x: int, y: int):
         """
-        模拟一次作用于坐标百分比上的点击操作
+        模拟一次作用于坐标百分比上的点击操作 \n
         """
         size = self._driverCore.get_window_size()
         self.tap_xy(x=size['width'] * x, y=size['height'] * y)
@@ -115,7 +122,7 @@ class ConstructorsView(object):
     def _adaption_swipe(self, x1: float, y1: float, x2: float, y2: float,
                         direction: str, speed: int = 1000, number: int = 1, wait: int = 1, log_output: bool = True):
         """
-        自适应滑动
+        自适应滑动 \n
 
         :param x1                   : float 类型，表示当前设备屏幕百分比
         :param y1                   : float 类型，表示当前设备屏幕百分比

@@ -15,12 +15,21 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        ConstructorsApp 由 Puppeteer 进行集成
+
+        该模块的职责在于构建元素组件
 
 """
+import time
 
+from selenium.webdriver import ActionChains
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.common.touch_actions import TouchActions
 
 from core.common.log import Log
 from core.common.element_structure import ElementStructure
@@ -28,7 +37,7 @@ from core.common.customize_exception import ModuleTapEventException
 from core.common.customize_exception import ModuleLongTapEventException
 from core.common.customize_exception import ModuleSendKeyEventException
 
-from core.testingkit.web.driver import RegisteredDriver
+from core.testingkit.web.driverhandle import RegisteredDriver
 
 
 __all__ = ['ConstructorsModule']
@@ -46,9 +55,6 @@ class ConstructorsModule(object):
     _registeredDriver: RegisteredDriver = None
     # DriverCore 实例
     _driverCore: WebDriver = None
-
-    # TouchAction 类
-    _touchAction = TouchActions
 
     # 元素结构体 ElementStructure 对象
     _elementStructure = None
@@ -92,7 +98,7 @@ class ConstructorsModule(object):
 
     def get_text(self, element_id: int = 1, log_output: bool = True):
         """
-        获取元素的 text 属性
+        获取元素的 text 属性 \n
 
         :param element_id           : 元素列表下标
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
@@ -110,7 +116,7 @@ class ConstructorsModule(object):
 
     def tap(self, element_id: int = 1, log_output: bool = True):
         """
-        模拟一次作用于 WebElement 对象上的点击操作
+        模拟一次作用于 WebElement 对象上的单击操作 \n
 
         :param element_id           : 元素列表下标
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
@@ -119,7 +125,7 @@ class ConstructorsModule(object):
             self._analytical_elements()
             element_text = self._elementContainer[element_id - 1].text
 
-            self._touchAction(self._driverCore).tap(self._elementContainer[element_id - 1]).perform()
+            ActionChains(self._driverCore).click(self._elementContainer[element_id - 1]).perform()
 
             if log_output:
                 log_output_info = f'Tap Event' \
@@ -134,20 +140,44 @@ class ConstructorsModule(object):
         except Exception:
             raise ModuleTapEventException
 
-    def long_tap(self, element_id: int = 1, wait: int = 1500, log_output: bool = True):
+    def double_tap(self, element_id: int = 1, log_output: bool = True):
         """
-        模拟一次作用于 WebElement 对象上的长按操作
+        模拟一次作用于 WebElement 对象上的双击操作 \n
 
         :param element_id           : 元素列表下标
-        :param wait                 : 按住时长，单位是毫秒
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
         """
         try:
             self._analytical_elements()
             element_text = self._elementContainer[element_id - 1].text
 
-            self._touchAction(self._driverCore).long_press(
-                self._elementContainer[element_id - 1]).wait(wait).perform()
+            ActionChains(self._driverCore).double_click(self._elementContainer[element_id - 1]).perform()
+
+            if log_output:
+                log_output_info = f'Double Tap Event' \
+                                  f' -> {self._elementStructure.page_name} ' \
+                                  f'-> {self._elementStructure.element_name}'
+
+                if element_text != '':
+                    log_output_info += f' -> [{element_text}]'
+
+                self._logServer.info(log_output_info)
+
+        except Exception:
+            raise ModuleTapEventException
+
+    def long_tap(self, element_id: int = 1, log_output: bool = True):
+        """
+        模拟一次作用于 WebElement 对象上的长按操作 \n
+
+        :param element_id           : 元素列表下标
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        try:
+            self._analytical_elements()
+            element_text = self._elementContainer[element_id - 1].text
+
+            ActionChains(self._driverCore).click_and_hold(self._elementContainer[element_id - 1]).perform()
 
             if log_output:
                 log_output_info = f'Long Tap Event' \
@@ -162,9 +192,32 @@ class ConstructorsModule(object):
         except Exception:
             raise ModuleLongTapEventException
 
+    def mouse_move_to(self, element_id: int = 1, wait: int = 3, log_output: bool = True):
+        """
+        模拟一次作用于 WebElement 对象上的点击操作 \n
+
+        :param element_id           : 元素列表下标
+        :param wait                 : 鼠标悬停时间
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        try:
+            self._analytical_elements()
+
+            ActionChains(self._driverCore).move_to_element(self._elementContainer[element_id - 1]).perform()
+            time.sleep(wait)
+
+            if log_output:
+                self._logServer.info(f'Mouse Move To Element'
+                                     f' -> {self._elementStructure.page_name}'
+                                     f' -> {self._elementStructure.element_name}'
+                                     f' -> [{wait}s]')
+
+        except Exception:
+            raise ModuleTapEventException
+
     def send_key(self, key: str, element_id: int = 1, log_output: bool = True):
         """
-        输入框输入内容
+        输入框输入内容 \n
 
         :param key                  : 输入内容
         :param element_id           : 元素列表下标
@@ -186,7 +239,7 @@ class ConstructorsModule(object):
 
     def clear(self, element_id: int = 1, log_output: bool = True):
         """
-        输入框清除内容
+        输入框清除内容 \n
 
         :param element_id           : 元素列表下标
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
@@ -199,9 +252,49 @@ class ConstructorsModule(object):
                                  f' -> {self._elementStructure.page_name}'
                                  f' -> {self._elementStructure.element_name}')
 
+    def drop_down_box_select_index(self, index: int, element_id: int = 1, log_output: bool = True):
+        """
+        下拉框选择:: 通过索引 \n
+
+        :param index                : 下拉框选项集索引
+        :param element_id           : 元素列表下标
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        self._analytical_elements()
+        select_object = Select(self._elementContainer[element_id - 1])
+        select_object.select_by_index(index - 1)
+
+        select_item_name = select_object.all_selected_options[0].text
+
+        if log_output:
+            self._logServer.info(f'DropDownBor Select Event'
+                                 f' -> {self._elementStructure.page_name}'
+                                 f' -> {self._elementStructure.element_name}'
+                                 f' -> [{select_item_name}]')
+
+    def drop_down_box_select_text(self, text: int, element_id: int = 1, log_output: bool = True):
+        """
+        下拉框选择:: 通过 text 值 \n
+
+        :param text                 : 下拉框选项集的 text 值
+        :param element_id           : 元素列表下标
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        self._analytical_elements()
+        select_object = Select(self._elementContainer[element_id - 1])
+        select_object.select_by_visible_text(text)
+
+        select_item_name = select_object.all_selected_options[0].text
+
+        if log_output:
+            self._logServer.info(f'DropDownBor Select Event'
+                                 f' -> {self._elementStructure.page_name}'
+                                 f' -> {self._elementStructure.element_name}'
+                                 f' -> [{select_item_name}]')
+
     def in_page(self, element_id: int = 1, wait: int = 3, log_output: bool = True):
         """
-        判断元素是否存在当前可视页面
+        判断元素是否存在当前可视页面 \n
 
         :param element_id           : 元素列表下标
         :param wait                 : 元素获取时长
@@ -224,6 +317,20 @@ class ConstructorsModule(object):
                                      f' -> {self._elementStructure.page_name}'
                                      f' -> {self._elementStructure.element_name}')
             return False
+
+    def goto_element_location(self, element_id: int = 1, log_output: bool = True):
+        """
+        跳转至 元素 所在位置 \n
+
+        :param element_id           : 元素列表下标
+        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
+        """
+        self._analytical_elements()
+        self._driverCore.execute_script("arguments[0].scrollIntoView();", self._elementContainer[element_id - 1])
+        if log_output:
+            self._logServer.info(f'Goto Element Location'
+                                 f' -> {self._elementStructure.page_name}'
+                                 f' -> {self._elementStructure.element_name}')
 
 
 if __name__ == '__main__':

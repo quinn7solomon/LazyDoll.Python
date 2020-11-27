@@ -15,7 +15,14 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        DriverHandle 模块由基类 BaseDriverHandle 实现注册机制， 其本身只负责驱动注册过程
+
+        RegisteredDriver 模块由基类 BaseRegisteredDriver 实现封装的 Find 函数
 
 """
 
@@ -27,10 +34,10 @@ from core.common.base_driver import BaseDriverHandle
 from core.common.base_driver import BaseRegisteredDriver
 
 
-__all__ = ['Driver', 'RegisteredDriver']
+__all__ = ['DriverHandle', 'RegisteredDriver']
 
 
-class Driver(object):
+class DriverHandle(object):
     """
     单例模式 \n
     """
@@ -75,12 +82,6 @@ class RegisteredDriver(BaseRegisteredDriver):
     """
 
     _driverCore: WebDriver = None
-
-    def goto_url(self, url: str):
-        """
-        访问 URL \n
-        """
-        self._driverCore.get(url)
 
 
 if __name__ == '__main__':

@@ -31,16 +31,10 @@
 
 import allure
 
-# 引入 core 库的 Log 类
 from core.common.log import Log
+from core.const import GlobalVariate
+from core.testingkit.app.driverhandle import DriverHandle
 
-# 引入 testingKit_app 库的 Puppeteer 类
-from core.testingkit.app.puppeteer import _PuppeteerCore
-
-# 引入 testing_app 项目的全局参数
-from demos.testing_app.solution_parameter import *
-
-# 引入 testing_app 项目的元素模型 ModeSystem
 from demos.testing_app.modes.mode_system import ModeSystem
 
 
@@ -50,11 +44,13 @@ class Test01CaseSystem(object):
     # 日志服务
     Log = Log()
 
-    # Puppeteer 实例
-    PuppeteerObj = _PuppeteerCore.get_driver(SOLUTION_DRIVER_CONFIG_PATH)
+    # DriverHandle 示例
+    DriverHandle = DriverHandle()
+    # RegisteredDriver 实例
+    RegisteredDriver = DriverHandle.get_driver(GlobalVariate.DIR_PATH_CONFIG.joinpath('android_8.1.0.yaml'))
 
     # 元素模型
-    ModeSystem = ModeSystem(PuppeteerObj)
+    ModeSystem = ModeSystem(RegisteredDriver)
 
     @classmethod
     def setup_class(cls):
@@ -68,7 +64,7 @@ class Test01CaseSystem(object):
         类级别的销毁操作，在类结束的时候运行
         """
         # 全部用例执行完毕后销毁 Driver进程
-        cls.PuppeteerObj.quit()
+        cls.RegisteredDriver.quit()
 
     def setup_method(self):
         """
@@ -113,7 +109,7 @@ class Test01CaseSystem(object):
         """
         try:
             self.ModeSystem.home_upward_arrows.tap()
-            self.ModeSystem.app_view_top_search.send('Calculator')
+            self.ModeSystem.app_view_top_search.send_key('Calculator')
 
             r = self.ModeSystem.app_view_app_list.get_text(1)
             assert r == 'Calculator'
@@ -133,7 +129,7 @@ class Test01CaseSystem(object):
         """
         try:
             self.ModeSystem.home_upward_arrows.tap()
-            self.ModeSystem.app_view_top_search.send('Calculator')
+            self.ModeSystem.app_view_top_search.send_key('Calculator')
             self.ModeSystem.app_view_app_list.tap(1)
             self.ModeSystem.calculator_keyboard_int(1).tap()
             self.ModeSystem.calculator_keyboard_add.tap()

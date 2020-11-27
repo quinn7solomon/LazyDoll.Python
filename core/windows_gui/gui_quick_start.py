@@ -15,7 +15,12 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        GuiQuickStart 模块实现了项目快速启动 测试Case 的 WindowsGui 可视化操作界面
 
 """
 
@@ -26,8 +31,8 @@ import shutil
 from dearpygui import core
 from dearpygui import simple
 
-from core.global_parameter import *
 from core.common.log import Log
+from core.const import GlobalVariate
 
 
 __all__ = ['GuiQuickStart']
@@ -53,11 +58,11 @@ class GuiQuickStart(object):
         core.set_main_window_size(self.guiWindowWidth, self.guiWindowHeight)
         core.set_main_window_resizable(False)
 
-        for case_name in GLOBAL_DIR_PATH_CASES.glob('test_*.py'):
+        for case_name in GlobalVariate.DIR_PATH_CASES.glob('test_*.py'):
             self.caseNameList.append(case_name.name)
 
         # 注册Value : 默认测试报告名称
-        core.add_value('reports_name', f'{GLOBAL_ROOT_NAME}_report')
+        core.add_value('reports_name', f'{GlobalVariate.ROOT_NAME}_report')
 
     def _running_callback(self, sender, data):
         """
@@ -99,8 +104,8 @@ class GuiQuickStart(object):
             core.add_spacing(count=2)
 
             # 测试方案的名称与路径
-            core.add_text(f'Testing Scheme Name    : {GLOBAL_ROOT_NAME}')
-            core.add_text(f'Testing Scheme Path    : {str(GLOBAL_ROOT_PATH)}')
+            core.add_text(f'Testing Scheme Name    : {GlobalVariate.ROOT_NAME}')
+            core.add_text(f'Testing Scheme Path    : {str(GlobalVariate.ROOT_PATH)}')
 
             core.add_spacing(count=2)
             core.add_separator()
@@ -133,9 +138,9 @@ class GuiQuickStart(object):
         """
         selected_case_name = core.get_value('##CasesNameListCombo')
         if selected_case_name == 'running all case':
-            return GLOBAL_DIR_PATH_CASES
+            return GlobalVariate.DIR_PATH_CASES
         else:
-            return GLOBAL_DIR_PATH_CASES.joinpath(selected_case_name)
+            return GlobalVariate.DIR_PATH_CASES.joinpath(selected_case_name)
 
     @staticmethod
     def get_output_reports_path():
@@ -145,11 +150,11 @@ class GuiQuickStart(object):
         current_timestamp = time.strftime('%Y%m%d', time.localtime())
         reports_name = core.get_value('##ReportsName') + '-' + current_timestamp
 
-        reports_output_path = GLOBAL_DIR_PATH_REPORTS.joinpath(reports_name)
+        reports_output_path = GlobalVariate.DIR_PATH_REPORTS.joinpath(reports_name)
         if reports_output_path.exists():
             i = 1
             while True:
-                reports_output_path = GLOBAL_DIR_PATH_REPORTS.joinpath(reports_name + '-' + str(i))
+                reports_output_path = GlobalVariate.DIR_PATH_REPORTS.joinpath(reports_name + '-' + str(i))
                 if reports_output_path.exists():
                     i += 1
                     continue

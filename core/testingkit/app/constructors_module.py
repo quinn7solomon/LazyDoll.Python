@@ -15,7 +15,14 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        ConstructorsApp 由 Puppeteer 进行集成
+
+        该模块的职责在于构建元素组件
 
 """
 
@@ -28,7 +35,7 @@ from core.common.customize_exception import ModuleTapEventException
 from core.common.customize_exception import ModuleLongTapEventException
 from core.common.customize_exception import ModuleSendKeyEventException
 
-from core.testingkit.app.driver import RegisteredDriver
+from core.testingkit.app.driverhandle import RegisteredDriver
 
 
 __all__ = ['ConstructorsModule']
@@ -93,7 +100,7 @@ class ConstructorsModule(object):
 
     def get_text(self, element_id: int = 1, log_output: bool = True):
         """
-        获取元素的 text 属性
+        获取元素的 text 属性 \n
 
         :param element_id           : 元素列表下标
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
@@ -111,7 +118,7 @@ class ConstructorsModule(object):
 
     def tap(self, element_id: int = 1, click_number: int = 1, log_output: bool = True):
         """
-        模拟一次作用于 WebElement 对象上的点击操作
+        模拟一次作用于 WebElement 对象上的点击操作 \n
 
         :param element_id           : 元素列表下标
         :param click_number         : 点击次数
@@ -139,7 +146,7 @@ class ConstructorsModule(object):
 
     def long_tap(self, element_id: int = 1, wait: int = 1500, log_output: bool = True):
         """
-        模拟一次作用于 WebElement 对象上的长按操作
+        模拟一次作用于 WebElement 对象上的长按操作 \n
 
         :param element_id           : 元素列表下标
         :param wait                 : 按住时长，单位是毫秒
@@ -167,7 +174,7 @@ class ConstructorsModule(object):
 
     def send_key(self, key: str, element_id: int = 1, log_output: bool = True):
         """
-        输入框输入内容
+        输入框输入内容 \n
 
         :param key                  : 输入内容
         :param element_id           : 元素列表下标
@@ -189,7 +196,7 @@ class ConstructorsModule(object):
 
     def clear(self, element_id: int = 1, log_output: bool = True):
         """
-        输入框清除内容
+        输入框清除内容 \n
 
         :param element_id           : 元素列表下标
         :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
@@ -204,7 +211,7 @@ class ConstructorsModule(object):
 
     def in_page(self, element_id: int = 1, wait: int = 3, log_output: bool = True):
         """
-        判断元素是否存在当前可视页面
+        判断元素是否存在当前可视页面 \n
 
         :param element_id           : 元素列表下标
         :param wait                 : 元素获取时长

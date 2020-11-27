@@ -15,7 +15,18 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
+
+    Last Modified Time : 2020.11.27
+
+    RegisteredDriver   :
+
+        base_driver 模块定义了 DriverHandle 、RegisteredDriver 的基类 -> BaseDriverHandle 、BaseRegisteredDriver
+
+        BaseDriverHandle 实现了注册机制，既每一个 RegisteredDriver 都必须由 DriverHandle 注册并生产
+        BaseDriverHandle 统一管理 RegisteredDriver 的生命周期
+        BaseDriverHandle 注册过程由子类实现
+
+        BaseRegisteredDriver 实现了封装的 Find 函数
 
 """
 
@@ -139,21 +150,6 @@ class BaseRegisteredDriver(object):
         except Exception as err:
             self._logServer.info(f'common_find.find_element error: {err}')
             raise
-
-    def find_element_exist(self, element_structure: ElementStructure, wait: int = 3, log_output: bool = True) -> bool:
-        """
-        定位元素是否存在于当前可视化页面 \n
-
-        :param element_structure    : 元素结构体 ElementStructure 对象
-        :param wait                 : 查找元素所等待的等待时长
-        :param log_output           : 执行完毕后是否打印容错日志，False 则表示不输出容错日志
-
-        :return                     : 表示元素是否存在于当前可视化页面中的布尔值
-        """
-        element_list = self.find_element(element_structure, wait, tolerance=True, log_output=log_output)
-        if element_list is None:
-            return False
-        return True
 
     def _get_search_range(self, element_structure: ElementStructure, wait: int) -> WebElement or WebDriver:
         """

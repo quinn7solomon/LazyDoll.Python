@@ -15,36 +15,34 @@
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
-    Environment  : PyCharm
 
+    Last Modified Time : 2020.11.27
 
-    # 实例化 Puppeteer 类
-    puppeteer = Puppeteer(android_configPath)
+    RegisteredDriver   :
 
-    # 组件构建模板
-    button = puppeteer.module(
-    {
-        'anchor_ele': {                # 非必须，当存在锚元素参数时，将在锚元素下查找元素
-            'by': 'element_by',
-            'el': 'element_el'
-        }
+        Puppeteer 模块职责于优雅的构建页面功能组件与构建页面元素组件
 
-        'by': 'element_by',            # 元素定位方式，如id、class
-        'el': 'element_el',            # 元素定位方式相应的属性
-        'id': 1                        # 非必须
+        示例: (构建一个百度首页搜索框的元素组件并调用方法)
 
-        'pg_name': 'page_name',        # 组件所属页面
-        'bn_name': 'button_name',      # 组件名称
-    })
+            baiDu_button = puppeteerObj.module(ElementStructure(
+                           {
+                               Const.ELEMENT_BY: 'xpath',
+                               Const.ELEMENT_EL: '//input[@id="kw"]',
+                               Const.ELEMENT_PAGE_NAME: '百度模型',
+                               Const.ELEMENT_ELEMENT_NAME: '首页搜索框'
+                           }))
 
-    # 组件调用
-    button.tap()
-    button.on_in_page()
+        示例: (调用方法)
+
+            baiDu_button.get_element_len()  # 获取元素数量
+            baiDu_button.get_text()         # 获取元素 text 属性
+            baiDu_button.tap()              # 点击元素
+            baiDu_button.in_page()          # 判断元素是否存在当前页面
 
 """
 
 from core.common.log import Log
-from core.testingkit.app.driver import RegisteredDriver
+from core.testingkit.app.driverhandle import RegisteredDriver
 from core.common.element_structure import ElementStructure
 from core.common.customize_exception import PuppeteerConstructorsAppException
 from core.common.customize_exception import PuppeteerConstructorsViewException
@@ -55,7 +53,7 @@ from core.testingkit.app.constructors_view import ConstructorsView
 from core.testingkit.app.constructors_module import ConstructorsModule
 
 
-__all__ = ['Puppeteer']
+__all__ = ['Puppeteer', 'PuppeteerCore']
 
 
 class Puppeteer(object):
@@ -67,11 +65,11 @@ class Puppeteer(object):
 
     def __new__(cls, registered_driver, *args, **kwargs):
         if not cls._unique_puppeteer_core:
-            cls._unique_puppeteer_core = _PuppeteerCore(registered_driver)
+            cls._unique_puppeteer_core = PuppeteerCore(registered_driver)
         return cls._unique_puppeteer_core
 
 
-class _PuppeteerCore(object):
+class PuppeteerCore(object):
     """
     组件对象 OOP 构建函数类 \n
     """
