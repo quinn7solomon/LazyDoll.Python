@@ -23,6 +23,7 @@ from core.common.log import Log
 from core.common.element_structure import ElementStructure
 
 from core.testingkit.app.driverhandle import RegisteredDriver
+from core.testingkit.app.puppeteer import Puppeteer
 from core.testingkit.app.puppeteer import PuppeteerCore
 
 
@@ -48,7 +49,7 @@ class ModeSystem(object):
 
         :param registered_driver : RegisteredDriver 实例
         """
-        self._puppeteerCore = PuppeteerCore(registered_driver)
+        self._puppeteerCore = Puppeteer(registered_driver)
 
     @property
     def app(self):
