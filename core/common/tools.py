@@ -11,7 +11,7 @@
 
     Copyright (c) 2020, @ quinn.7@foxmail.com, All rights reserved
 
-    GitPath      : https://github.com/quinn7solomon/LazyDoll_Python
+    GitPath      : https://github.com/quinn7solomon/LazyDoll.Python
     FrameName    : LazyDoll_Python
     CreatorName  : Quinn7k
     CreationTime : 2020.11.19
